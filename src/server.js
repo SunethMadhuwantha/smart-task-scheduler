@@ -43,5 +43,5 @@ app.get('/', (req, res) => {
 
 // 6. Start the Server
 app.listen(PORT, () => {
-  console.log(`🚀 Server running with JWT Auth on http://localhost:${PORT}`);
+  console.log(`Server running with JWT Auth on http://localhost:${PORT}`);
 });
