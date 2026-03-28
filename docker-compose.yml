@@ -1,0 +1,23 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: task_db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: task_manager
+    ports:
+      - "5432:5432"
+
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      DB_USER: admin
+      DB_PASSWORD: password123
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: task_manager
+    depends_on:
+      - db

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smart Scheduler Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-6 text-indigo-600">Task Scheduler Dashboard</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Form to Add Task -->
+            <div class="bg-white p-6 rounded shadow">
+                <h2 class="text-xl font-bold mb-4">Add New Task</h2>
+                <form id="taskForm" class="space-y-4">
+                    <input type="text" id="title" placeholder="Task Title" class="w-full p-2 border rounded" required>
+                    <input type="number" id="duration" placeholder="Duration (mins)" class="w-full p-2 border rounded" required>
+                    <input type="number" id="priority" placeholder="Priority (1-5)" min="1" max="5" class="w-full p-2 border rounded" required>
+                    <input type="date" id="deadline" class="w-full p-2 border rounded" required>
+                    <button type="submit" class="w-full bg-indigo-600 text-white p-2 rounded hover:bg-indigo-700">Add Task</button>
+                </form>
+            </div>
+
+            <!-- Schedule View -->
+            <div class="bg-white p-6 rounded shadow">
+                <h2 class="text-xl font-bold mb-4">Daily Schedule (9am-5pm)</h2>
+                <button onclick="loadSchedule()" class="mb-4 bg-green-500 text-white px-4 py-2 rounded">Refresh Schedule</button>
+                <div id="scheduleList" class="space-y-2"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to send a task to the backend
+        document.getElementById('taskForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const task = {
+                title: document.getElementById('title').value,
+                duration: parseInt(document.getElementById('duration').value),
+                priority: parseInt(document.getElementById('priority').value),
+                deadline: document.getElementById('deadline').value
+            };
+            await fetch('/tasks', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(task)
+            });
+            alert("Task Added!");
+            loadSchedule();
+        };
+
+        // Function to get the schedule from the backend
+        async function loadSchedule() {
+            const res = await fetch('/tasks/schedule', { method: 'POST' });
+            const data = await res.json();
+            const list = document.getElementById('scheduleList');
+            list.innerHTML = '';
+            data.scheduled.forEach(t => {
+                list.innerHTML += `<div class="p-2 border-l-4 border-indigo-500 bg-gray-50">
+                    <span class="font-bold">${t.startTime} - ${t.endTime}</span>: ${t.title}
+                </div>`;
+            });
+        }
+        window.onload = loadSchedule;
+    </script>
+</body>
+</html>
