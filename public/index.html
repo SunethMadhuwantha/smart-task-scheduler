@@ -9,7 +9,7 @@
         <h1 class="text-3xl font-bold mb-6 text-indigo-600">Task Scheduler Dashboard</h1>
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Form to Add Task -->
+            <!-- Form -->
             <div class="bg-white p-6 rounded shadow">
                 <h2 class="text-xl font-bold mb-4">Add New Task</h2>
                 <form id="taskForm" class="space-y-4">
@@ -21,7 +21,7 @@
                 </form>
             </div>
 
-            <!-- Schedule View -->
+            
             <div class="bg-white p-6 rounded shadow">
                 <h2 class="text-xl font-bold mb-4">Daily Schedule (9am-5pm)</h2>
                 <button onclick="loadSchedule()" class="mb-4 bg-green-500 text-white px-4 py-2 rounded">Refresh Schedule</button>
@@ -31,7 +31,7 @@
     </div>
 
     <script>
-        // Function to send a task to the backend
+        // send a task to the backend
         document.getElementById('taskForm').onsubmit = async (e) => {
             e.preventDefault();
             const task = {
@@ -49,7 +49,7 @@
             loadSchedule();
         };
 
-        // Function to get the schedule from the backend
+        // get the schedule from the backend
         async function loadSchedule() {
             const res = await fetch('/tasks/schedule', { method: 'POST' });
             const data = await res.json();

@@ -8,30 +8,13 @@ A professional Full-Stack RESTful API built with **Node.js**, **Express**, and *
 
 The **Smart Task Scheduling System** is designed to help users efficiently manage and schedule tasks within a standard 8-hour workday. It uses a **Greedy Algorithm (Earliest Deadline First + Priority Weighting)** to intelligently allocate tasks based on urgency and importance.
 
----
 
-## 📚 Table of Contents
-
-* [Features](#-features)
-* [Tech Stack](#-tech-stack)
-* [Installation](#-setup--installation)
-* [Usage](#-usage)
-* [API Documentation](#-api-documentation)
-* [Scheduling Logic](#-scheduling-logic-the-algorithm)
-* [Testing](#-running-unit-tests)
-* [Deployment](#-deployment)
-* [Configuration](#-configuration)
-* [Troubleshooting](#-troubleshooting)
-* [Contributors](#-contributors)
-* [License](#-license)
-
----
 
 ## ✨ Features
 
 * ✅ Full CRUD: Create, Read, Update, Delete tasks
 * 🧠 Smart Scheduler (8-hour workday: 09:00 AM – 05:00 PM)
-* 🎨 Frontend Dashboard (interactive UI)
+* 🎨 Frontend Dashboard 
 * 🔐 JWT Authentication
 * 🧪 Unit Testing with Jest
 * 🐳 Dockerized Setup
@@ -171,7 +154,7 @@ Run tests with:
 npm test
 ```
 
-This validates scheduling accuracy and core logic.
+This validates scheduling accuracy .
 
 ---
 
@@ -219,13 +202,7 @@ docker-compose up -d
 
 ## 👨‍💻 Contributors
 
-* Your Name Here
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License**.
+* Suneth Madhuwantha
 
 ---
 
@@ -238,4 +215,4 @@ This project demonstrates:
 * Secure authentication
 * Production-ready DevOps setup
 
-Feel free to fork, improve, and scale 🚀
+Feel free to fork, improve, and scale 

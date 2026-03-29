@@ -1,4 +1,4 @@
-// A simple function to test the 8-hour (480 mins) logic
+// test the 8-hour (480 mins) 
 const checkScheduleLimit = (currentTotal, newTaskDuration) => {
     const LIMIT = 480; // 8 hours in minutes
     return (currentTotal + newTaskDuration) <= LIMIT;

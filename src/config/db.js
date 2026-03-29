@@ -9,7 +9,7 @@ const pool = new Pool({
   port: process.env.DB_PORT,
 });
 
-// This function will run when the server starts
+
 const initDb = async () => {
   const queryText = `
     CREATE TABLE IF NOT EXISTS tasks (

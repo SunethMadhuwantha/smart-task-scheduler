@@ -2,12 +2,12 @@ const express = require('express');
 const router = express.Router();
 const { pool } = require('../config/db');
 
-// GET /tasks - Retrieve all tasks from the database
+// GET /tasks 
 router.get('/', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM tasks ORDER BY created_at DESC');
     
-    // Send the list of tasks back to the user
+    // Send the list 
     res.status(200).json(result.rows);
   } catch (err) {
     console.error("Error fetching tasks:", err);
@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   const { title, description, duration, priority, deadline } = req.body;
 
-  // 1. Validation Checks
+  // Validation 
   if (!title || duration <= 0 || priority < 1 || priority > 5 || !deadline) {
     return res.status(400).json({ 
       error: "Invalid input. Ensure title is present, duration > 0, and priority is between 1-5." 
@@ -37,19 +37,19 @@ router.post('/', async (req, res) => {
   }
 });
 
-// GET /tasks/:id - Retrieve a specific task by its ID
+// GET /tasks/:id 
 router.get('/:id', async (req, res) => {
-  const { id } = req.params; // This gets the "1" from the URL
+  const { id } = req.params; 
 
   try {
     const result = await pool.query('SELECT * FROM tasks WHERE id = $1', [id]);
 
-    // If no task is found with that ID
+    // return 404 
     if (result.rows.length === 0) {
       return res.status(404).json({ error: "Task not found" });
     }
 
-    // Return the single task object
+    
     res.json(result.rows[0]);
   } catch (err) {
     console.error(err);
@@ -57,7 +57,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// PUT /tasks/:id - Update an existing task
+// PUT /tasks/:id
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const { title, description, duration, priority, deadline } = req.body;
@@ -78,7 +78,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// DELETE /tasks/:id - Remove a task
+// DELETE /tasks/:id 
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
 
@@ -96,34 +96,34 @@ router.delete('/:id', async (req, res) => {
 });
 
 
-// POST /schedule - Generate the daily schedule
+// POST /schedule 
 router.post('/schedule', async (req, res) => {
   try {
-    // 1. Get all tasks from the database
+    
     const result = await pool.query('SELECT * FROM tasks');
     let tasks = result.rows;
 
-    // 2. Define Workday Constants
+    // Define Workday 
     const WORK_START_HOUR = 9; // 9:00 AM
     const WORK_END_HOUR = 17;  // 5:00 PM
     const TOTAL_MINUTES = (WORK_END_HOUR - WORK_START_HOUR) * 60; // 480 minutes
 
-    // 3. Sort Tasks (Priority 5 first, then by Deadline)
+    // Priority 5 firstn by Deadline)
     tasks.sort((a, b) => {
       if (b.priority !== a.priority) {
-        return b.priority - a.priority; // Higher priority first
+        return b.priority - a.priority; 
       }
-      return new Date(a.deadline) - new Date(b.deadline); // Earliest deadline first
+      return new Date(a.deadline) - new Date(b.deadline); 
     });
 
-    let currentTime = 0; // Minutes passed since 9:00 AM
+    let currentTime = 0; 
     const scheduledTasks = [];
     const unscheduledTasks = [];
 
-    // 4. The "Scheduling Loop"
+    
     tasks.forEach(task => {
       if (currentTime + task.duration <= TOTAL_MINUTES) {
-        // Task fits! Calculate clock time
+        //Calculate clock time
         const startHour = Math.floor((WORK_START_HOUR * 60 + currentTime) / 60);
         const startMin = (WORK_START_HOUR * 60 + currentTime) % 60;
         
@@ -136,9 +136,9 @@ router.post('/schedule', async (req, res) => {
           endTime: `${endHour.toString().padStart(2, '0')}:${endMin.toString().padStart(2, '0')}`
         });
 
-        currentTime += task.duration; // Move the clock forward
+        currentTime += task.duration; 
       } else {
-        // Task doesn't fit
+        
         unscheduledTasks.push({
           ...task,
           reason: "Not enough time remaining in the 8-hour workday"
@@ -146,7 +146,7 @@ router.post('/schedule', async (req, res) => {
       }
     });
 
-    // 5. Send the result
+    // Send the result
     res.json({
       date: new Date().toISOString().split('t')[0],
       workday: "09:00 AM - 05:00 PM",
